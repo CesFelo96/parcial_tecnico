@@ -3,6 +3,7 @@ import { pool } from './shared/database.js';
 import { fileURLToPath } from 'node:url';
 import helmet from 'helmet';
 import { randomUUID } from 'node:crypto';
+import { tablesRouter } from './modules/tables/tables.routes.js';
 
 export const app = express();
 app.disable('x-powered-by');
@@ -33,6 +34,8 @@ app.get('/health/db', async (_req, res) => {
     res.status(503).json({ status: 'error', database: 'unavailable' });
   }
 });
+
+app.use('/api/tables', tablesRouter);
 
 app.use((_req, res) => res.status(404).json({ message: 'Ruta no encontrada' }));
 app.use(
